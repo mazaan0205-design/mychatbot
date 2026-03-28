@@ -3,7 +3,7 @@ from openai import OpenAI
 import os
 
 # 1. Get the raw key
-raw_key = os.environ.get("GROK_API_KEY")
+raw_key = os.environ.get(GROK_API_KEY)
 
 st.set_page_config(page_title="Grok 2026", page_icon="🚀")
 
