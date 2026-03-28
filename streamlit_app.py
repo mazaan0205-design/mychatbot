@@ -37,7 +37,7 @@ if prompt := st.chat_input("Ask Grok something..."):
     try:
         # 3. Use the mandatory March 2026 model name
         response = client.chat.completions.create(
-            model="grok-4.1-fast-non-reasoning", 
+            model="grok-4.20-non-reasoning", 
             messages=[{"role": "user", "content": prompt}]
         )
         
