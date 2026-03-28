@@ -3,16 +3,19 @@ from openai import OpenAI
 import os
 
 # 1. DEBUG: This checks if the 'hand' found the 'key' in the environment
-api_key = os.environ.get("GROK_API_KEY")
+raw_key = os.environ.get("GROK_API_KEY")
 
 st.set_page_config(page_title="Grok 2026", page_icon="🚀")
 
-if not api_key:
+if not raw_key:
     st.error("❌ THE CODE COULD NOT FIND THE KEY IN THE ENVIRONMENT.")
     st.info("Action: Go to Streamlit App Settings -> Secrets and paste: GROK_API_KEY = 'your-key-here'")
     st.stop()
 else:
     st.success("✅ Environment Variable 'GROK_API_KEY' found!")
+
+# We strip the key to remove any accidental spaces or quotes from the Secrets box
+api_key = raw_key.strip().replace('"', '').replace("'", "")
 
 # 2. Setup Client
 client = OpenAI(
@@ -36,8 +39,9 @@ if prompt := st.chat_input("Ask Grok something..."):
 
     try:
         # 3. Use the mandatory March 2026 model name
+        # We use grok-4.1-fast-non-reasoning as it is the most stable right now
         response = client.chat.completions.create(
-            model="grok-4.20-non-reasoning", 
+            model="grok-4.1-fast-non-reasoning", 
             messages=[{"role": "user", "content": prompt}]
         )
         
