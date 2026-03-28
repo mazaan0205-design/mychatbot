@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+from groq import groq
 import os
 
 # 1. THE "GET" STEP (Like your PowerShell setup)
