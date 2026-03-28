@@ -2,15 +2,17 @@ import streamlit as st
 from openai import OpenAI
 import os
 
-# 1. Secret Diagnosis
+# 1. DEBUG: This checks if the 'hand' found the 'key' in the environment
 api_key = os.environ.get("GROK_API_KEY")
 
-st.set_page_config(page_title="Grok 2026 AI", page_icon="🤖")
+st.set_page_config(page_title="Grok 2026", page_icon="🚀")
 
 if not api_key:
-    st.error("❌ ERROR: 'GROK_API_KEY' not found in Streamlit Secrets.")
-    st.info("Go to: Manage App -> Settings -> Secrets and add: GROK_API_KEY = 'your-key'")
+    st.error("❌ THE CODE COULD NOT FIND THE KEY IN THE ENVIRONMENT.")
+    st.info("Action: Go to Streamlit App Settings -> Secrets and paste: GROK_API_KEY = 'your-key-here'")
     st.stop()
+else:
+    st.success("✅ Environment Variable 'GROK_API_KEY' found!")
 
 # 2. Setup Client
 client = OpenAI(
@@ -18,10 +20,8 @@ client = OpenAI(
     base_url="https://api.x.ai/v1",
 )
 
-st.title("🤖 My Grok AI Agent")
-st.caption("Running on xAI Grok-4.1-Fast (March 2026)")
+st.title("🚀 My Grok AI Chatbot")
 
-# 3. Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -29,14 +29,13 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# 4. Chat Execution
-if prompt := st.chat_input("Ask me anything..."):
+if prompt := st.chat_input("Ask Grok something..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     try:
-        # We use the specific 2026 stable model ID here
+        # 3. Use the mandatory March 2026 model name
         response = client.chat.completions.create(
             model="grok-4.1-fast-non-reasoning", 
             messages=[{"role": "user", "content": prompt}]
@@ -48,5 +47,4 @@ if prompt := st.chat_input("Ask me anything..."):
         st.session_state.messages.append({"role": "assistant", "content": answer})
         
     except Exception as e:
-        # This will tell us if it's 'Model not found' or 'Invalid API Key'
-        st.error(f"⚠️ API Error: {e}")
+        st.error(f"⚠️ xAI Server Error: {e}")
