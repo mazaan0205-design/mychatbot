@@ -36,7 +36,7 @@ if prompt := st.chat_input("Ask Grok 4.20..."):
     try:
         # Using the specific 4.20 model you requested
         response = client.chat.completions.create(
-            model="grok-4.20", 
+            model="grok-beta", 
             messages=[{"role": "user", "content": prompt}]
         )
         
