@@ -2,23 +2,20 @@ import streamlit as st
 from openai import OpenAI
 import os
 
-# 1. THE "POWERSHELL" STEP (Manual Injection)
-# This line is like typing '$env:GROK_API_KEY = "..."' in PowerShell
-# Replace the text below with your actual key
-os.environ["GROK_API_KEY"] = "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"
-
-# 2. THE "GET" STEP
-# Now the code can find it in the environment because we just put it there
+# 1. THE "GET" STEP
+# This looks for the variable in the cloud environment
 api_key = os.environ.get("GROK_API_KEY")
 
-st.set_page_config(page_title="Grok Manual Env", page_icon="🚀")
-st.title("🚀 Grok Chatbot: Manual Env Mode")
+st.set_page_config(page_title="Grok 4.20 Agent", page_icon="🤖")
+st.title("🤖 My Grok AI Chatbot")
+st.caption("Running on xAI Grok-4.20")
 
 if not api_key:
-    st.error("❌ The environment injection failed.")
+    st.error("❌ Environment Variable 'GROK_API_KEY' not found.")
+    st.info("Please add it to your Streamlit Secrets dashboard.")
     st.stop()
 
-# 3. Setup Client
+# 2. Setup Client
 client = OpenAI(
     api_key=api_key,
     base_url="https://api.x.ai/v1",
@@ -31,15 +28,15 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("Ask Grok something..."):
+if prompt := st.chat_input("Ask Grok 4.20..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     try:
-        # Using the March 2026 stable model
+        # Using the specific 4.20 model you requested
         response = client.chat.completions.create(
-            model="grok-4.1-fast-non-reasoning", 
+            model="grok-4.20", 
             messages=[{"role": "user", "content": prompt}]
         )
         
